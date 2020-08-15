@@ -20,7 +20,7 @@ export default function AuthRoute(){
                 backgroundColor: '#6200ee',
             },
             headerTintColor: '#FFF',
-            headerTitle: ''
+            headerTitle: 'Cadastro'
         }}/>
             </Stack.Navigator>
         </NavigationContainer>

@@ -51,18 +51,14 @@ class SignUp extends Component{
 
     render(){
         return(
-
+          
             <View style={styles.background}>
-              <KeyboardAvoidingView  style={styles.background} 
+              <ScrollView>
+              <KeyboardAvoidingView  style={[styles.container]} 
                 enabled
+                behavior="padding"
                 >
-                <View style={styles.containerTitle}>
-                  <Title style={styles.textTitle}>Cadastro de Usuário</Title>
-                </View>
                 
-
-
-                  <View style={[styles.bodyFlex,styles.container]} behavior="padding" enabled >
                     <TextInput
                     label="Nome"
                     value={this.state.login}
@@ -103,19 +99,11 @@ class SignUp extends Component{
                     </Button>
                     
                     
-                    </View>
                     </KeyboardAvoidingView>
-                    {/* <ActivityIndicator size="large"  color="blue" style={{
-            position: 'absolute',
-            top: 0,
-            bottom: 0,
-            right: 0,
-            left: 0,
-            justifyContent:'center',
-            alignItems:'center',
-            zIndex: 1,
-            backgroundColor: 'rgba(0,0,0,0.6)'}}/>     */}
+                    
+                    </ScrollView>
             </View>
+            
         )
     }
 }

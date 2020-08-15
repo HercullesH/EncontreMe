@@ -1,8 +1,6 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
-    background:{
-      flex:1
-    },
+
     containerTitle:{
       backgroundColor: '#6200ee',
       flex: 1,
@@ -15,9 +13,14 @@ const styles = StyleSheet.create({
       fontFamily: 'Trebuchet MS',
       fontSize: 20
     },
+    background:{
+      flex:1,
+      backgroundColor: '#FFF'
+    },
     container: {
       justifyContent: 'flex-start',
-      alignItems: 'center'
+      alignItems: 'center',
+      flex: 1
     },
     component:{
         width:'90%',
@@ -36,10 +39,6 @@ const styles = StyleSheet.create({
     },
     marginTop:{
       marginTop: 15
-    },
-    bodyFlex:{
-      flex:2.4,
-      backgroundColor: '#fafafa'
     },
     loading: {
     position: 'absolute',
