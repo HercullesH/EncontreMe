@@ -32,7 +32,7 @@ export async function signUp(item){
 }
 
 export async function signIn(email, password){
-    let data = {}
+    let data = null
     await firebase.auth().signInWithEmailAndPassword(email,password)
     .then(async (value)=>{
         let uid = value.user.uid;
@@ -49,7 +49,6 @@ export async function signIn(email, password){
     .catch((error)=> {
 
         data = null
-        alert(error.code);
     });
 
     return data

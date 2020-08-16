@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Image, TouchableOpacity,Text, KeyboardAvoidingView} from 'react-native'
 import styles from './style'
-import { TextInput, Button } from 'react-native-paper';
+import { TextInput, Button, Snackbar  } from 'react-native-paper';
 import { signIn } from '../../services/authService';
 import { startLoading, stopLoading  } from '../../actions/loading';
 import { setUser  } from '../../actions/user';
@@ -15,11 +15,14 @@ class SignIn extends Component{
         // Não chame this.setState() aqui!
         const initialState = {
             login:'',
-            password: ''
+            password: '',
+            visible: false
         }
         this.state = initialState;
         this.changeValues = this.changeValues.bind(this)
         this.login = this.login.bind(this)
+        this.showSnackBar = this.showSnackBar.bind(this)
+        this.hideSnackBar = this.hideSnackBar.bind(this)
       }
 
       changeValues(name,value){
@@ -29,11 +32,19 @@ class SignIn extends Component{
         })
       }
 
+      showSnackBar(){
+        this.setState({visible : true})
+      }
+
+      hideSnackBar(){
+        this.setState({visible : false})
+      }
+
       async login(){
         this.props.actions.startLoading()
         let user = await signIn(this.state.login, this.state.password)
         this.props.actions.stopLoading()
-        this.props.actions.setUser( user, true )
+        user ? this.props.actions.setUser( user, true ) : this.showSnackBar()
       }
 
       
@@ -64,6 +75,14 @@ class SignIn extends Component{
                         <Button style={styles.component}  mode="contained" onPress={this.login}>
                             Entrar
                         </Button>
+
+                        <Snackbar
+                        visible={this.state.visible}
+                        onDismiss={this.hideSnackBar}
+                        duration={2500}
+                        theme={{colors: {onSurface : '#CB4335'} }}>
+                        Dados inválidos
+                      </Snackbar>
 
                         <TouchableOpacity style={styles.touchable} onPress={() => this.props.navigation.navigate('SignUp')}>
                             <Text style={styles.linkSignUp}>Não sou cadastrado</Text>

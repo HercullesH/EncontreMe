@@ -1,7 +1,8 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     background:{
-      flex:1
+      flex:1,
+      backgroundColor: '#6200ee'
     },
     containerTitle:{
       backgroundColor: '#6200ee',
@@ -9,26 +10,21 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center'
     },
-    textTitle:{
-      
-      color:'#FFF',
-      fontFamily: 'Trebuchet MS',
-      fontSize: 20
-    },
     container: {
       justifyContent: 'flex-start',
       alignItems: 'center'
     },
     component:{
         width:'90%',
-        marginBottom: 15,
+        marginBottom: 15
         
     },
-    textInput:{
-        height: 45,
-    },
-    linkSignUp:{
-        color: 'blue'
+
+    button:{
+      borderRadius:20
+  },
+    blue:{
+        color: '#6200ee'
     },
     touchable:{
         width: '90%',
@@ -37,19 +33,6 @@ const styles = StyleSheet.create({
     marginTop:{
       marginTop: 15
     },
-    bodyFlex:{
-      flex:2.4,
-      backgroundColor: '#fafafa'
-    },
-    loading: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
     
   });
 

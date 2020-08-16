@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
     container: {
       justifyContent: 'flex-start',
       alignItems: 'center',
-      flex: 1
     },
     component:{
         width:'90%',

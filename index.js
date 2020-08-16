@@ -14,7 +14,7 @@ import theme from './src/core/theme'
 import configureStore from './src/store/configureStore';
 
 const store = configureStore()
-
+console.disableYellowBox = true; 
 
 const RNRedux = () => (
   <Provider store = { store }>

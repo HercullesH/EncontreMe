@@ -41,11 +41,14 @@ class Home extends Component{
     render(){
         return(
 
-            <View style={styles.background}>
-              <Text>oi</Text>
+            <View style={[styles.background, styles.container]}>
 
-              <Button style={styles.component}  mode="contained" onPress={ this.logout }>
-                        Salvar
+              <Button style={[styles.component,styles.button]} color="white" mode="contained" onPress={ this.logout }>
+                        <Text style={styles.blue}>Sair</Text>
+              </Button>
+
+              <Button style={[styles.component,styles.button]} color="white" mode="contained" onPress={ () => this.props.navigation.navigate('PatientNew') }>
+                        <Text style={styles.blue}>Novo Paciente</Text>
               </Button>
             </View>
         )
