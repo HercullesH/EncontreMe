@@ -1,9 +1,6 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
-    background:{
-      flex:1,
-      backgroundColor: '#6200ee'
-    },
+
     containerTitle:{
       backgroundColor: '#6200ee',
       flex: 1,
@@ -11,13 +8,12 @@ const styles = StyleSheet.create({
       alignItems: 'center'
     },
     container: {
-      justifyContent: 'flex-start',
-      alignItems: 'center'
+      backgroundColor: '#E5E7E9',
+      flex: 1
     },
     component:{
         width:'90%',
-        marginBottom: 15
-        
+        marginTop: 15     
     },
 
     button:{
@@ -26,6 +22,19 @@ const styles = StyleSheet.create({
     blue:{
         color: '#6200ee'
     },
+    buttonHeader:{
+      width:'30%',
+      marginTop: 8
+  },
+  bottom: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  marginLeft:{
+    marginLeft: 15
+},
     touchable:{
         width: '90%',
         marginTop: 5

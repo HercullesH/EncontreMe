@@ -1,4 +1,8 @@
 import firebase from './firebaseConnection';
+import RNFetchBlob, { RNFetchBlobSession } from 'react-native-fetch-blob';
+import { Platform } from 'react-native'
+import 'firebase/storage';
+
 export async function add(data){
     let status = true;
     let key = await firebase.database().ref('patients').push().key;
@@ -11,3 +15,64 @@ export async function add(data){
 
     return status;
 }
+
+export async function getAll(){
+    let data = [];
+    await firebase.database().ref('patients')
+      .once('value', (snapshot)=>{
+
+        if(snapshot.val()){
+            let key = Object.keys(snapshot.val())[0];
+        snapshot.forEach((item) => {
+            data.push( {...item.val(), key: key} )         
+          })
+        }
+
+        
+          
+        })
+    return data
+}
+
+async function uploadImage(uri, mime = 'application/octet-stream') {
+    const storage = firebase.storage();
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri
+    const sessionId = new Date().getTime();
+    const imageRef = storage.ref('images').child(`${sessionId}`);
+
+    let blob = await uriToBlob(uploadUri)
+
+    var uploadTask = await imageRef.put(blob, { contentType: mime })
+
+    let link = await uploadTask.ref.getDownloadURL()
+
+    return link
+      
+
+  
+}
+
+  function uriToBlob(uri) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.onload = function() {
+        // return the blob
+        resolve(xhr.response);
+      };
+      
+      xhr.onerror = function() {
+        // something went wrong
+        reject(new Error('uriToBlob failed'));
+      };
+      // this helps us get a blob
+      xhr.responseType = 'blob';
+      xhr.open('GET', uri, true);
+      
+      xhr.send(null);
+    });
+  }
+
+  export async function pickImage(uri) {
+      let data = await uploadImage(uri)
+      return data
+  }

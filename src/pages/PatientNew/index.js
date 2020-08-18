@@ -2,13 +2,12 @@ import React, { Component } from 'react';
 import { View,Text, KeyboardAvoidingView, ScrollView,Platform } from 'react-native';
 import { Button, Snackbar, TextInput } from 'react-native-paper';
 import styles from './style';
-import { add } from '../../services/patientService';
+import { add, pickImage } from '../../services/patientService';
 import { startLoading, stopLoading  } from '../../actions/loading';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Avatar } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker'
-import { cos } from 'react-native-reanimated';
 
 
 function Image(data){
@@ -77,17 +76,24 @@ class PatientNew extends Component{
 
 
       async submit(){
+        //this.prepareObjectSubmit(this.state.item)
         this.props.actions.startLoading()
-        let data = this.prepareObjectSubmit(this.state.item)
+        let data = await this.prepareObjectSubmit(this.state.item)
         const status = await add(data)
         this.props.actions.stopLoading()
+        this.props.navigation.reset({
+          index: 0,
+          routes: [{name: 'Home'}],
+        });
       }
 
-      prepareObjectSubmit(item){
+      async prepareObjectSubmit(item){
+        let uri = await pickImage(this.state.photoUri)
+
         let data = item;
         data.height = parseFloat(data.height)
         data.weight = parseInt(data.weight)
-        data.image = this.state.photoBase64,
+        data.image = uri,
         data.userUid = this.props.user.uid
         return data
       }
@@ -106,8 +112,8 @@ class PatientNew extends Component{
                     
 
                       <View style={{ flexDirection:'row', alignItems: 'center' }}>
-                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={ this.submit }>
-                        Câmera  
+                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={ () => console.log('Pressed') }>
+                        Câmera
                       </Button>
 
                       <Button icon="folder-image" style={styles.buttonPhoto}  mode="text" onPress={ this.openGallery }>
