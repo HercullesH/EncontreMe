@@ -7,8 +7,17 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center'
     },
+    fab: {
+      position: 'absolute',
+      margin: 16,
+      right: 0,
+      bottom: 0,
+      backgroundColor: '#6200ee',
+      color: 'white'
+    },
     container: {
       backgroundColor: '#E5E7E9',
+      //backgroundColor: '#FFF',
       flex: 1
     },
     component:{
@@ -19,10 +28,10 @@ const styles = StyleSheet.create({
     button:{
       borderRadius:20
   },
-    blue:{
+  blue:{
         color: '#6200ee'
     },
-    buttonHeader:{
+  buttonHeader:{
       width:'30%',
       marginTop: 8
   },

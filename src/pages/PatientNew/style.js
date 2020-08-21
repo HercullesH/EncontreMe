@@ -25,6 +25,15 @@ const styles = StyleSheet.create({
       width: '40%',
       marginTop: 15,
       marginRight: 10
+    },
+    list: {
+      paddingVertical: 5,
+      margin: 3,
+      flexDirection: "row",
+      backgroundColor: "#192338",
+      justifyContent: "flex-start",
+      alignItems: "center",
+      zIndex: -1
     }
     
   });

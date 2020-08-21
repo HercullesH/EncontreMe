@@ -17,9 +17,9 @@ export default function AuthRoute(){
                 <Stack.Screen name="SignIn" component={SignIn} options={{headerShown: false}} />
                 <Stack.Screen name="SignUp" component={SignUp} options={{
             headerStyle:{
-                backgroundColor: '#6200ee',
+                backgroundColor: '#FFF',
             },
-            headerTintColor: '#FFF',
+            headerTintColor: '#6200ee',
             headerTitle: 'Cadastro'
         }}/>
             </Stack.Navigator>

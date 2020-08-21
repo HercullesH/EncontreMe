@@ -18,16 +18,18 @@ export async function add(data){
 
 export async function getAll(){
     let data = [];
+    let count = 0
     await firebase.database().ref('patients')
       .once('value', (snapshot)=>{
 
         if(snapshot.val()){
-            let key = Object.keys(snapshot.val())[0];
-        snapshot.forEach((item) => {
-            data.push( {...item.val(), key: key} )         
+            let keys = Object.keys(snapshot.val())
+        snapshot.forEach((item, index) => {
+          count += 1 
+          let patient = {...item.val(), key: keys[count],isSelect : false,selectedClass : {} }
+            data.push( patient )          
           })
         }
-
         
           
         })

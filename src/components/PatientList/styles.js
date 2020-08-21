@@ -1,13 +1,23 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
 
-    fontText: {
-        fontWeight: 'bold'
+    text: {
+        color: '#777'
     },
     card: {
-        marginLeft:10,
-        marginRight:10,
-        marginTop: 10
+        marginLeft:5,
+        marginRight:5,
+        marginTop: 2
+        
+    },
+    containerCard:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 5
+    },
+    contentCard:{
+        flexDirection: 'column',
+        marginLeft: 20
     }
   });
 

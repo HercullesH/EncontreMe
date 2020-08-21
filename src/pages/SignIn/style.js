@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center'
     },
+    scrollView: {
+      flexGrow: 1
+    },
     component:{
         width:'90%',
         marginBottom: 15,

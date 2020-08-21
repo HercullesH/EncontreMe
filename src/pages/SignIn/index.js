@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, TouchableOpacity,Text, KeyboardAvoidingView} from 'react-native'
+import { View, Image, TouchableOpacity,Text, KeyboardAvoidingView, ScrollView} from 'react-native'
 import styles from './style'
 import { TextInput, Button, Snackbar  } from 'react-native-paper';
 import { signIn } from '../../services/authService';
@@ -51,7 +51,7 @@ class SignIn extends Component{
 
     render(){
         return(
-            <View style={styles.background}>
+          <ScrollView contentContainerStyle={styles.scrollView} style={styles.background}>
                 
                     <KeyboardAvoidingView style={styles.container}>
                         <Image source={require('../../assets/logo.png')}/>
@@ -88,7 +88,7 @@ class SignIn extends Component{
                             <Text style={styles.linkSignUp}>Não sou cadastrado</Text>
                         </TouchableOpacity>
                     </KeyboardAvoidingView>
-            </View>
+            </ScrollView>
         )
     }
 }

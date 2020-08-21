@@ -1,28 +1,110 @@
-import React from 'react';
-import { View, StyleSheet,Image, TouchableOpacity,Text, ImageBackground } from 'react-native';
-import {  Card, Divider, Paragraph } from 'react-native-paper';
+import React, { Component} from 'react';
+import { View, StyleSheet,Image, TouchableOpacity,Text, ImageBackground, FlatList } from 'react-native';
+import {  Card, Divider, Paragraph, Avatar } from 'react-native-paper';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import styles from './styles'
+import { setPatientSelected } from '../../actions/patientSelected'
 
-export default function PatientList( {data} ){
-    return(
+class PatientList extends Component { 
 
-        <View>
-            <Card  style={styles.card}>
-            
-            {/* <Card.Cover resizeMode="stretch"  style={{ height: 100, width: '90%'}} source={{ uri: data.image }} /> */}
-            
-            <Image source={{ uri: data.image }} resizeMode="contain"  style={{height:350}} />
-            <Card.Content>
-                <Paragraph><Text style={ styles.fontText}>Sexo: </Text>{data.gender}</Paragraph>
-                <Paragraph><Text style={ styles.fontText}>Pele: </Text>{data.skin}</Paragraph>
-                
-                <Paragraph><Text style={ styles.fontText}>Peso: </Text>{data.weight}</Paragraph>
-                <Paragraph><Text style={ styles.fontText}>Altura: </Text>{data.height}</Paragraph>
-            </Card.Content>
-            
-        </Card>
-        {/* <Image source={{ width:'90%',height:200,uri: `data:image/jpeg;base64,${data.image}` }}/> */}
-        </View>
+    constructor(props) {
+        super(props);
+        // Não chame this.setState() aqui!
+
+        this.state = {
+            patientList: this.props.patientList
+        }
+
+        this.selectItem = this.selectItem.bind(this)
+      }
+
+      selectItem(item, index){
+        let patientList = this.state.patientList
+        let patientsSelected = this.props.patientsSelected
+        if(item.isSelect){
+        item.selectedClass = {}
+        item.isSelect = false
+        const index = patientsSelected.indexOf(item.key);
+        patientsSelected.splice(index, 1);
+        } else {
+
+        item.isSelect = true
+        item.selectedClass = {backgroundColor: '#00FFFF'}
+        patientsSelected.push(item.key)
         
-    )
+        }
+        patientList[index] = item
+        this.props.actions.setPatientSelected(patientsSelected)
+        this.setState({ patientList: patientList }) 
+      }
+
+      pressItem(item, index){
+        if( this.props.patientsSelected.length > 0){
+            this.selectItem(item, index)
+        }
+        
+      }
+      longpressItem(item, index){
+        if( this.props.patientsSelected.length === 0){
+            this.selectItem(item, index)
+        }
+      }
+    //   onPress={() => patientList[index].item.selectedClass = {backgroundColor: '#000'}}
+    render(){
+        return(
+
+            <FlatList
+                      showsVerticalScrollIndicator={false}
+                      data={this.state.patientList}
+                      keyExtractor={item => item.key}
+                      extraData={this.state.patientList}
+                      renderItem={( {item, index} ) => ( 
+                      <View>
+                        <TouchableOpacity onPress={() => this.pressItem(item, index)}  onLongPress={() => this.longpressItem(item, index ) }>
+                        <Card  style={[styles.card,item.selectedClass]}>
+                        
+                        
+                        
+                        
+                        
+                        <Card.Content >
+                            <View style={styles.containerCard}>
+                                <Avatar.Image source={{ uri: item.image }} size={110} />
+                                <View style={styles.contentCard}>
+                                <Paragraph>Sexo: <Text style={styles.text}>{item.gender}</Text></Paragraph>
+                                <Paragraph>Pele: <Text style={styles.text}>{item.skin}</Text></Paragraph>
+                                
+                                <Paragraph>Peso:  <Text style={styles.text}>{item.weight}</Text> </Paragraph>
+                                <Paragraph>Altura: <Text style={styles.text}>{item.height}</Text></Paragraph>
+                                </View>
+                            </View>
+                        </Card.Content>
+                        
+                        
+                        
+                    </Card>
+                    </TouchableOpacity>
+                    {/* <Image source={{ width:'90%',height:200,uri: `data:image/jpeg;base64,${data.image}` }}/> */}
+                    </View>
+                    )}
+                      style={{marginBottom: 2}}
+            />
+            
+            
+        )
+    }
+    
 }
+
+
+const mapStateToProps = state => ({
+    patientsSelected: state.patientsSelected.patientsSelected
+  });
+  
+  
+const mapDispatchToProps = dispatch => ({
+actions: bindActionCreators({setPatientSelected}, dispatch),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(PatientList)
