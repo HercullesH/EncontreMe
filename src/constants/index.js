@@ -7,3 +7,5 @@ export const STOP_LOADING = 'STOP_LOADING'
 export const SET_USER = 'SET_USER'
 
 export const SET_PATIENT_SELECTED = 'SET_PATIENT_SELECTED'
+
+export const SET_PATIENT_LIST = 'SET_PATIENT_LIST'

@@ -16,6 +16,28 @@ export async function add(data){
     return status;
 }
 
+export async function del(items){
+  let status = true;
+  let storage = firebase.storage()
+  items.forEach( async (item) =>{
+    let refImage = storage.refFromURL(item.image)
+    refImage.delete().then(function() {
+        
+    }).catch(function(error) {
+      
+    });
+
+    await firebase.database().ref('patients').child(item.key).remove()
+    .then(() => {
+        status = true;
+    }).catch((error) => {
+        alert(error)
+    })
+  })
+  
+
+}
+
 export async function getAll(){
     let data = [];
     let count = 0
@@ -24,10 +46,10 @@ export async function getAll(){
 
         if(snapshot.val()){
             let keys = Object.keys(snapshot.val())
-        snapshot.forEach((item, index) => {
-          count += 1 
-          let patient = {...item.val(), key: keys[count],isSelect : false,selectedClass : {} }
-            data.push( patient )          
+            snapshot.forEach((item, index) => {
+            let patient = {...item.val(), key: keys[count],isSelect : false,selectedClass : {} }
+            data.push( patient )    
+            count += 1       
           })
         }
         

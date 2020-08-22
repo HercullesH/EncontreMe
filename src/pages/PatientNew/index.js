@@ -112,7 +112,7 @@ class PatientNew extends Component{
                     
 
                       <View style={{ flexDirection:'row', alignItems: 'center' }}>
-                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={ () => console.log('Pressed') }>
+                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={ () => this.props.navigation.navigate('Camera') }>
                         Câmera
                       </Button>
 

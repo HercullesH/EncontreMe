@@ -51,6 +51,9 @@ const styles = StyleSheet.create({
     marginTop:{
       marginTop: 15
     },
+    marginButtonDialog:{
+      marginRight: 10
+    }
     
   });
 

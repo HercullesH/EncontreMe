@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { View, ScrollView, ImageBackground, FlatList,Text  } from 'react-native';
-import { Button, Appbar,FAB } from 'react-native-paper';
+import { Button, Appbar,FAB, Paragraph, Dialog, Portal } from 'react-native-paper';
 
 import { startLoading, stopLoading  } from '../../actions/loading';
 import { setUser } from '../../actions/user'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { signOut } from '../../services/authService'
-import { getAll } from '../../services/patientService'
+import { getAll, del } from '../../services/patientService'
 import styles from './style'
 import PatientList from '../../components/PatientList'
-import { setPatientSelected } from '../../actions/patientSelected'
+import { setPatientSelected,setPatientsList } from '../../actions/patientSelected'
 
 
 class Home extends Component{
@@ -26,11 +26,15 @@ class Home extends Component{
         }
 
         this.state = {
-            patientList: []
+            deleteDialog: false
         }
 
         this.logout = this.logout.bind(this)
         this.getPatients = this.getPatients.bind(this)
+        this.showDialog = this.showDialog.bind(this)
+        this.hideDialog = this.hideDialog.bind(this)
+        this.deletePatients = this.deletePatients.bind(this)
+        this.loadData = this.loadData.bind(this)
       }
 
       async logout(){
@@ -42,16 +46,39 @@ class Home extends Component{
 
       async getPatients(){
         let patients = await getAll()
-        this.setState({patientList : patients})
+        this.props.actions.setPatientsList(patients)
+      }
+
+      showDialog(){
+        this.setState({ deleteDialog: true })
+      }
+
+      async deletePatients(){
+        this.hideDialog()
+        await del(this.props.patientsSelected.patientsSelected)
+        this.loadData()
+        
+      }
+
+      hideDialog(){
+        this.setState({ deleteDialog: false })
+      }
+
+      async loadData(){
+        
+        this.props.actions.setPatientSelected([])
+        await this.getPatients()
+        
       }
 
       async componentDidMount(){
         this.props.actions.startLoading()
-        this.props.actions.setPatientSelected([])
-        await this.getPatients()
+        this.loadData()
         this.props.actions.stopLoading()
         
       }
+
+      
 
 
 
@@ -84,7 +111,7 @@ class Home extends Component{
 
           <Appbar.Action
             icon="delete"
-            onPress={ () => console.log('delete') }
+            onPress={ this.showDialog }
             style={{ marginRight: 15 }}
            />
 
@@ -95,7 +122,21 @@ class Home extends Component{
               </ImageBackground> */}
               <View style={[ styles.container]}>
 
-              {this.state.patientList.length > 0 && <PatientList patientList={this.state.patientList} />}
+              <Portal>
+                <Dialog visible={this.state.deleteDialog} 
+                onDismiss={ this.hideDialog }>
+                  <Dialog.Title>Atenção</Dialog.Title>
+                  <Dialog.Content>
+            <Paragraph>Você tem certeza que deseja excluir {this.props.patientsSelected.patientsSelected.length} iten(s) ?</Paragraph>
+                  </Dialog.Content>
+                  <Dialog.Actions>
+                    <Button style={styles.marginButtonDialog} onPress={ this.hideDialog }>Cancelar</Button>
+                    <Button onPress={ this.deletePatients }>Confirmar</Button>
+                  </Dialog.Actions>
+                </Dialog>
+              </Portal>
+
+              {this.props.patientsSelected.patientList.length > 0 && <PatientList patientList={this.props.patientsSelected.patientList} />}
                 
                 <FAB
                 style={styles.fab}
@@ -119,7 +160,7 @@ const mapStateToProps = state => ({
   
   
   const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({startLoading, stopLoading, setUser, setPatientSelected}, dispatch),
+    actions: bindActionCreators({startLoading, stopLoading, setUser, setPatientSelected, setPatientsList }, dispatch),
   });
   
   export default connect(mapStateToProps, mapDispatchToProps)(Home)

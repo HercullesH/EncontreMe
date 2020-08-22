@@ -4,7 +4,7 @@ import {  Card, Divider, Paragraph, Avatar } from 'react-native-paper';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import styles from './styles'
-import { setPatientSelected } from '../../actions/patientSelected'
+import { setPatientSelected, setPatientsList } from '../../actions/patientSelected'
 
 class PatientList extends Component { 
 
@@ -20,33 +20,34 @@ class PatientList extends Component {
       }
 
       selectItem(item, index){
-        let patientList = this.state.patientList
-        let patientsSelected = this.props.patientsSelected
+        let patientList = this.props.patientsSelected.patientList
+        let patientsSelected = this.props.patientsSelected.patientsSelected
         if(item.isSelect){
         item.selectedClass = {}
         item.isSelect = false
-        const index = patientsSelected.indexOf(item.key);
+        const index = patientsSelected.map(e => e.key).indexOf(item.key);
+        //const index = patientsSelected.indexOf(item.key);
         patientsSelected.splice(index, 1);
         } else {
 
         item.isSelect = true
         item.selectedClass = {backgroundColor: '#00FFFF'}
-        patientsSelected.push(item.key)
+        patientsSelected.push(item)
         
         }
         patientList[index] = item
         this.props.actions.setPatientSelected(patientsSelected)
-        this.setState({ patientList: patientList }) 
+        this.props.actions.setPatientsList(patientList)
       }
 
       pressItem(item, index){
-        if( this.props.patientsSelected.length > 0){
+        if( this.props.patientsSelected.patientsSelected.length > 0){
             this.selectItem(item, index)
         }
         
       }
       longpressItem(item, index){
-        if( this.props.patientsSelected.length === 0){
+        if( this.props.patientsSelected.patientsSelected.length === 0){
             this.selectItem(item, index)
         }
       }
@@ -56,9 +57,9 @@ class PatientList extends Component {
 
             <FlatList
                       showsVerticalScrollIndicator={false}
-                      data={this.state.patientList}
+                      data={this.props.patientsSelected.patientList}
                       keyExtractor={item => item.key}
-                      extraData={this.state.patientList}
+                      extraData={this.props.patientsSelected.patientList}
                       renderItem={( {item, index} ) => ( 
                       <View>
                         <TouchableOpacity onPress={() => this.pressItem(item, index)}  onLongPress={() => this.longpressItem(item, index ) }>
@@ -99,12 +100,12 @@ class PatientList extends Component {
 
 
 const mapStateToProps = state => ({
-    patientsSelected: state.patientsSelected.patientsSelected
+    patientsSelected: state.patientsSelected
   });
   
   
 const mapDispatchToProps = dispatch => ({
-actions: bindActionCreators({setPatientSelected}, dispatch),
+actions: bindActionCreators({setPatientSelected, setPatientsList}, dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatientList)

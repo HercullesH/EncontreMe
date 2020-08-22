@@ -1,6 +1,7 @@
-import { SET_PATIENT_SELECTED } from '../constants';
+import { SET_PATIENT_SELECTED, SET_PATIENT_LIST } from '../constants';
 const initialState = {
-    patientsSelected: []
+    patientsSelected: [],
+    patientList: []
 };
 const patientSelectedReducer = (state = initialState, action) => {
     switch(action.type) {
@@ -8,6 +9,11 @@ const patientSelectedReducer = (state = initialState, action) => {
             return {
             ...state,
             patientsSelected:action.payload
+            };
+        case SET_PATIENT_LIST:
+            return {
+            ...state,
+            patientList:action.payload
             };
         default:
             return state;

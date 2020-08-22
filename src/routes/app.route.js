@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import Home from '../pages/Home'
 import PatientNew from '../pages/PatientNew';
+import Camera from '../pages/Camera'
 
 
 
@@ -65,6 +66,9 @@ export default function AppRoute(){
                     headerTintColor: '#6200ee',
                     headerTitle: 'Cadastro de paciente'
                     }}/>
+                <Stack.Screen name="Camera" component={Camera} options={{
+                headerShown: false
+                }}/>
             </Stack.Navigator>
         </NavigationContainer>
     )
