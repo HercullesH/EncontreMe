@@ -55,7 +55,9 @@ class Home extends Component{
 
       async deletePatients(){
         this.hideDialog()
+        this.props.actions.startLoading()
         await del(this.props.patientsSelected.patientsSelected)
+        this.props.actions.stopLoading()
         this.loadData()
         
       }

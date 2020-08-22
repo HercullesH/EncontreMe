@@ -4,16 +4,23 @@ import { Button, Snackbar, TextInput } from 'react-native-paper';
 import styles from './style';
 import { add, pickImage } from '../../services/patientService';
 import { startLoading, stopLoading  } from '../../actions/loading';
+import { setPhoto } from '../../actions/photo'
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Avatar } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker'
 
 
-function Image(data){
-  if(data){
+function Image(data, photo){
+  if(data.activeCamera && photo !== null){
     return(
-      <Avatar.Image size={140} style={styles.marginTop}  source={ {uri: data} }/>
+      <Avatar.Image size={140} style={styles.marginTop}  source={ {uri: photo } }/>
+    )
+    
+  }
+  if(data.photoUri){
+    return(
+      <Avatar.Image size={140} style={styles.marginTop}  source={ {uri: data.photoUri} }/>
     )
   }
 
@@ -37,12 +44,15 @@ class PatientNew extends Component{
           snackbar: false,
           photoUri:null,
           photoBase64: '',
-          item : initialState
+          item : initialState,
+          activeCamera: false
         };
         this.changeValues = this.changeValues.bind(this)
         this.submit = this.submit.bind(this)
         this.openGallery = this.openGallery.bind(this)
         this.prepareObjectSubmit = this.prepareObjectSubmit.bind(this)
+        this.goCamera = this.goCamera.bind(this)
+        this.clearPhoto = this.clearPhoto.bind(this)
       }
 
       changeValues(name,value){
@@ -52,6 +62,12 @@ class PatientNew extends Component{
               [name] : value
             },
         })
+      }
+
+      clearPhoto(){
+        if(!this.state.activeCamera && this.props.photo.photo !== null){
+          this.props.actions.setPhoto(null)
+        }
       }
 
       openGallery(){
@@ -74,6 +90,15 @@ class PatientNew extends Component{
     
       }
 
+      goCamera(){
+        this.setState({ activeCamera: true })
+        this.props.navigation.navigate('Camera')
+      }
+
+      componentDidMount(){
+        this.clearPhoto()
+      }
+
 
       async submit(){
         //this.prepareObjectSubmit(this.state.item)
@@ -88,6 +113,9 @@ class PatientNew extends Component{
       }
 
       async prepareObjectSubmit(item){
+        if(this.props.photo.photo !== null && this.state.activeCamera){
+          await this.setState({ photoUri:  this.props.photo.photo})
+        }
         let uri = await pickImage(this.state.photoUri)
 
         let data = item;
@@ -108,11 +136,11 @@ class PatientNew extends Component{
                   enabled
                   style={[styles.container,styles.background]}
                   >
-                    { Image(this.state.photoUri) }
+                    { Image(this.state, this.props.photo.photo) }
                     
 
                       <View style={{ flexDirection:'row', alignItems: 'center' }}>
-                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={ () => this.props.navigation.navigate('Camera') }>
+                      <Button icon="camera" style={styles.buttonPhoto}  mode="text" onPress={this.goCamera}>
                         Câmera
                       </Button>
 
@@ -168,12 +196,13 @@ class PatientNew extends Component{
 
 const mapStateToProps = state => ({
     loading: state.loading.loading,
-    user: state.user.user
+    user: state.user.user,
+    photo: state.photo
   });
   
   
   const mapDispatchToProps = dispatch => ({
-    actions: bindActionCreators({startLoading, stopLoading}, dispatch),
+    actions: bindActionCreators({startLoading, stopLoading, setPhoto}, dispatch),
   });
   
   export default connect(mapStateToProps, mapDispatchToProps)(PatientNew)
