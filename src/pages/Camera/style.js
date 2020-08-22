@@ -27,7 +27,15 @@ const styles = StyleSheet.create({
         right: 0,
         top: 150,
         backgroundColor: '#6200ee'
-    }
+    },
+    flashButton:{
+        position: 'absolute',
+        margin: 16,
+        right: 0,
+        top: 215,
+        backgroundColor: '#6200ee'
+    },
+
 })
 
 export default styles

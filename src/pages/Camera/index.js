@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { PermissionsAndroid , Platform, Image,Modal, View, Text, StatusBar, StyleSheet, TouchableOpacity } from 'react-native'
+import { PermissionsAndroid , Platform, View, Text, StatusBar } from 'react-native'
 import { RNCamera } from 'react-native-camera'
 import styles from './style'
 import { IconButton, FAB } from 'react-native-paper';
@@ -7,27 +7,47 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { setPhoto } from '../../actions/photo'
 import { useNavigation } from '@react-navigation/native';
+import ImageResizer from 'react-native-image-resizer';
+
+const typeFlashs = [
+  {icon:'flash', flashMode: RNCamera.Constants.FlashMode.on},
+  {icon:'flash-off', flashMode: RNCamera.Constants.FlashMode.off},
+  {icon:'flash-auto', flashMode: RNCamera.Constants.FlashMode.auto}
+]
 
 
 function Camera(props){
     const [photo,setPhoto] = useState(null)
     const [canTakePicture,setCanTakePicture] = useState(true)
     const [type,setType] = useState(RNCamera.Constants.Type.back)
+    const [flash,setFlash] = useState(0)
     const navigation = useNavigation();
 
     async function takePicture(camera){
 
         if(canTakePicture){
             setCanTakePicture(false)
-            const options = {quality: 0.6, base64: true }
+            const options = {quality: 0.7, base64: true }
             const data = await camera.takePictureAsync(options)
-        
-            setPhoto(data.uri)
-            await props.actions.setPhoto(data.uri)
+
+            let response = await resize(data.uri)
+            console.log('\n \n \n \n \n está aqui: ', response.uri)
+            setPhoto(response.uri)
+            await props.actions.setPhoto(response.uri) 
             navigation.goBack()
         }
         
       }
+    async function resize(uriImage) {
+      let photoUri = await ImageResizer.createResizedImage(uriImage, 300, 300, 'JPEG', 100)
+      return photoUri
+      
+    }
+
+    function changeFlash(){
+      flash === 2 ? setFlash( 0 ) : setFlash( flash + 1 )
+    }
+    
 
     function swapCam(){
         setType( type === RNCamera.Constants.Type.back ? RNCamera.Constants.Type.front : RNCamera.Constants.Type.back)
@@ -40,7 +60,7 @@ function Camera(props){
             <RNCamera
             style={ styles.preview }
             type={type}
-            flashMode={RNCamera.Constants.FlashMode.auto}
+            flashMode={typeFlashs[flash].flashMode}
             androidCameraPermissionOptions={{
             title: 'Permissão para usar a câmera',
             message: 'Nós precisamos usar a sua câmera',
@@ -97,6 +117,12 @@ function Camera(props){
                 color="white" 
                 style={styles.swapButton}
                 onPress={ swapCam }
+              />
+            <FAB
+                icon={typeFlashs[flash].icon} 
+                color="white" 
+                style={styles.flashButton}
+                onPress={ changeFlash }
               />
 
         </View>

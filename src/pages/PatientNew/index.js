@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Avatar } from 'react-native-paper';
 import ImagePicker from 'react-native-image-picker'
+import ImageResizer from 'react-native-image-resizer';
 
 
 function Image(data, photo){
@@ -70,12 +71,19 @@ class PatientNew extends Component{
         }
       }
 
+      async resize(uriImage) {
+        let photoUri = await ImageResizer.createResizedImage(uriImage, 300, 300, 'JPEG', 100)
+        return photoUri
+        
+      }
+
       openGallery(){
         const options = {
           title: 'Selecione uma foto',
           chooseFromLibraryButtonTitle: 'Buscar foto do album...',
           mediaType: 'photo',
-          quality: 0.6
+          quality: 0.7,
+          noData: true
         }
         ImagePicker.launchImageLibrary(options, async (response) => {
           if(response.didCancel){
@@ -83,7 +91,8 @@ class PatientNew extends Component{
           } else if('Gerou algum erro ', response.error){
             alert('Gerou algum erro: ', response.error)
           } else{
-            await this.setState({ photoUri: response.uri,photoBase64 : response.data })
+            let photo = await this.resize(response.uri)
+            await this.setState({ photoUri: photo.uri })
           }
         })
 

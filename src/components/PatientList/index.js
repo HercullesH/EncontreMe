@@ -31,7 +31,7 @@ class PatientList extends Component {
         } else {
 
         item.isSelect = true
-        item.selectedClass = {backgroundColor: '#00FFFF'}
+        item.selectedClass = {backgroundColor: '#6200ee'}
         patientsSelected.push(item)
         
         }
@@ -72,13 +72,20 @@ class PatientList extends Component {
                         <Card.Content >
                             <View style={styles.containerCard}>
                                 <Avatar.Image source={{ uri: item.image }} size={110} />
-                                <View style={styles.contentCard}>
-                                <Paragraph>Sexo: <Text style={styles.text}>{item.gender}</Text></Paragraph>
-                                <Paragraph>Pele: <Text style={styles.text}>{item.skin}</Text></Paragraph>
+                                { item.isSelect && <View style={styles.contentCard}>
+                                <Paragraph><Text style={styles.text}>Sexo: {item.gender}</Text></Paragraph>
+                                <Paragraph><Text style={styles.text}>Pele: {item.skin}</Text></Paragraph>
                                 
-                                <Paragraph>Peso:  <Text style={styles.text}>{item.weight}</Text> </Paragraph>
-                                <Paragraph>Altura: <Text style={styles.text}>{item.height}</Text></Paragraph>
-                                </View>
+                                <Paragraph><Text style={styles.text}>Peso:  {item.weight}</Text> </Paragraph>
+                                <Paragraph><Text style={styles.text}>Altura: {item.height}</Text></Paragraph>
+                                </View>}
+                                {!item.isSelect && <View style={styles.contentCard}>
+                                <Paragraph><Text style={styles.textSelect}>Sexo: {item.gender}</Text></Paragraph>
+                                <Paragraph><Text style={styles.textSelect}>Pele: {item.skin}</Text></Paragraph>
+                                
+                                <Paragraph><Text style={styles.textSelect}>Peso:  {item.weight}</Text> </Paragraph>
+                                <Paragraph><Text style={styles.textSelect}>Altura: {item.height}</Text></Paragraph>
+                                </View>}
                             </View>
                         </Card.Content>
                         

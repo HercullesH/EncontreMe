@@ -2,11 +2,14 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
 
     text: {
+        color: 'white' 
+    },
+    textSelect: {
         color: '#777'
     },
     card: {
-        marginLeft:5,
-        marginRight:5,
+        marginLeft:2,
+        marginRight:2,
         marginTop: 2
         
     },

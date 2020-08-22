@@ -19,7 +19,7 @@ const icons = {
     Home: {
       name: 'ios-home'
     },
-    Home2:{
+    Perfil:{
       name: 'md-person'
     }
   };
@@ -41,7 +41,7 @@ function Tabs(){
         }}
         >
           <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Home2" component={Home} />
+          <Tab.Screen name="Perfil" component={Home} />
         </Tab.Navigator>
     );
   }
