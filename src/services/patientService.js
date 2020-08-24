@@ -16,6 +16,32 @@ export async function add(data){
     return status;
 }
 
+export function delImage(image){
+  console.log('olha a url da imagem ', image)
+  let storage = firebase.storage()
+  let refImage = storage.refFromURL(image)
+  refImage.delete().then(function() {
+  }).catch(function(error) {
+    alert('erro ao excluir imagem')
+  });
+}
+
+export async function update(data){
+  //https://firebasestorage.googleapis.com
+  
+  let status = true
+  let key = data.key
+  delete data.key
+  await firebase.database().ref('patients').child(key).update(data)
+  .then(() => {
+      status = true;
+  }).catch((error) => {
+      status = false;
+  })
+
+  return status;
+}
+
 export async function del(items){
   let status = true;
   let storage = firebase.storage()

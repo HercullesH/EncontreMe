@@ -107,7 +107,7 @@ class Home extends Component{
 
           {this.props.patientsSelected.patientsSelected.length === 1 && <Appbar.Action
             icon="pencil"
-            onPress={ () => console.log('edit') }
+            onPress={ () => this.props.navigation.navigate('PatientEdit',{route:'PatientEdit',data: this.props.patientsSelected.patientsSelected[0]}) }
             style={{ marginRight: 15 }}
            /> }
 

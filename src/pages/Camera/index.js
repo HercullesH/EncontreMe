@@ -27,11 +27,10 @@ function Camera(props){
 
         if(canTakePicture){
             setCanTakePicture(false)
-            const options = {quality: 0.7, base64: true }
+            const options = {quality: 0.7, base64: true  }
             const data = await camera.takePictureAsync(options)
 
             let response = await resize(data.uri)
-            console.log('\n \n \n \n \n está aqui: ', response.uri)
             setPhoto(response.uri)
             await props.actions.setPhoto(response.uri) 
             navigation.goBack()

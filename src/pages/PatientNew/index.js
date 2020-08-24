@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View,Text, KeyboardAvoidingView, ScrollView,Platform } from 'react-native';
 import { Button, Snackbar, TextInput } from 'react-native-paper';
 import styles from './style';
-import { add, pickImage } from '../../services/patientService';
+import { add, update, pickImage,delImage } from '../../services/patientService';
 import { startLoading, stopLoading  } from '../../actions/loading';
 import { setPhoto } from '../../actions/photo'
 import { connect } from 'react-redux';
@@ -44,7 +44,6 @@ class PatientNew extends Component{
         this.state = {
           snackbar: false,
           photoUri:null,
-          photoBase64: '',
           item : initialState,
           activeCamera: false
         };
@@ -54,6 +53,7 @@ class PatientNew extends Component{
         this.prepareObjectSubmit = this.prepareObjectSubmit.bind(this)
         this.goCamera = this.goCamera.bind(this)
         this.clearPhoto = this.clearPhoto.bind(this)
+        this.loadByRouteName = this.loadByRouteName.bind(this)
       }
 
       changeValues(name,value){
@@ -104,16 +104,25 @@ class PatientNew extends Component{
         this.props.navigation.navigate('Camera')
       }
 
+      loadByRouteName(){
+        if(this.props.route.params.route === 'PatientEdit'){
+          let data = this.props.route.params.data
+          data.weight = `${data.weight}`,
+          data.height = `${data.height}`
+          this.setState({ item : data, photoUri: this.props.route.params.data.image })
+        }
+      }
+
       componentDidMount(){
         this.clearPhoto()
+        this.loadByRouteName()
       }
 
 
       async submit(){
-        //this.prepareObjectSubmit(this.state.item)
         this.props.actions.startLoading()
         let data = await this.prepareObjectSubmit(this.state.item)
-        const status = await add(data)
+        this.props.route.params.route === 'PatientEdit' ? await update(data) : await add(data)
         this.props.actions.stopLoading()
         this.props.navigation.reset({
           index: 0,
@@ -124,6 +133,9 @@ class PatientNew extends Component{
       async prepareObjectSubmit(item){
         if(this.props.photo.photo !== null && this.state.activeCamera){
           await this.setState({ photoUri:  this.props.photo.photo})
+        }
+        if(this.props.route.params.data.image !== this.state.photoUri){
+          await delImage(this.props.route.params.data.image)
         }
         let uri = await pickImage(this.state.photoUri)
 

@@ -66,6 +66,13 @@ export default function AppRoute(){
                     headerTintColor: '#6200ee',
                     headerTitle: 'Cadastro de paciente'
                     }}/>
+                <Stack.Screen name="PatientEdit" component={PatientNew} options={{
+                    headerStyle:{
+                        backgroundColor: '#FFF',
+                    },
+                    headerTintColor: '#6200ee',
+                    headerTitle: 'Atualização de paciente'
+                    }}/>
                 <Stack.Screen name="Camera" component={Camera} options={{
                 headerShown: false
                 }}/>
