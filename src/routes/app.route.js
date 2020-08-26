@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Home from '../pages/Home'
 import Patient from '../pages/Patient';
 import Camera from '../pages/Camera'
-
+import Profile from '../pages/Profile'
 
 
 
@@ -41,7 +41,7 @@ function Tabs(){
         }}
         >
           <Tab.Screen name="Home" component={Home} />
-          <Tab.Screen name="Perfil" component={Home} />
+          <Tab.Screen name="Perfil" component={Profile} />
         </Tab.Navigator>
     );
   }

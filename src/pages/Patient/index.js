@@ -109,7 +109,7 @@ class Patient extends Component{
           let data = this.props.route.params.data
           data.weight = `${data.weight}`,
           data.height = `${data.height}`
-          this.setState({ item : data, photoUri: this.props.route.params.data.image })
+          this.setState({ item : data, photoUri: data.image })
         }
       }
 
