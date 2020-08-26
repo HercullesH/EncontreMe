@@ -144,7 +144,7 @@ class Home extends Component{
                 style={styles.fab}
                 small
                 icon="plus"
-                onPress={() => this.props.navigation.navigate('PatientNew')}
+                onPress={() => this.props.navigation.navigate('PatientNew', {route: 'PatientNew'})}
               />
 
                 

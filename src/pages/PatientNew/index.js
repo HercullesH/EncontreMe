@@ -134,9 +134,13 @@ class PatientNew extends Component{
         if(this.props.photo.photo !== null && this.state.activeCamera){
           await this.setState({ photoUri:  this.props.photo.photo})
         }
-        if(this.props.route.params.data.image !== this.state.photoUri){
-          await delImage(this.props.route.params.data.image)
+
+        if(this.props.route.params.route === 'PatientEdit'){
+          if(this.props.route.params.data.image !== this.state.photoUri){
+            await delImage(this.props.route.params.data.image)
+          }  
         }
+        
         let uri = await pickImage(this.state.photoUri)
 
         let data = item;
