@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 import Home from '../pages/Home'
-import PatientNew from '../pages/PatientNew';
+import Patient from '../pages/Patient';
 import Camera from '../pages/Camera'
 
 
@@ -59,14 +59,14 @@ export default function AppRoute(){
                 headerTitle: 'Pacientes'
                 }}/>
 
-                <Stack.Screen name="PatientNew" component={PatientNew} options={{
+                <Stack.Screen name="PatientNew" component={Patient} options={{
                     headerStyle:{
                         backgroundColor: '#FFF',
                     },
                     headerTintColor: '#6200ee',
                     headerTitle: 'Cadastro de paciente'
                     }}/>
-                <Stack.Screen name="PatientEdit" component={PatientNew} options={{
+                <Stack.Screen name="PatientEdit" component={Patient} options={{
                     headerStyle:{
                         backgroundColor: '#FFF',
                     },

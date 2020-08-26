@@ -30,7 +30,7 @@ function Image(data, photo){
   )
 }
 
-class PatientNew extends Component{
+class Patient extends Component{
     constructor(props) {
         super(props);
         // Não chame this.setState() aqui!
@@ -230,4 +230,4 @@ const mapStateToProps = state => ({
     actions: bindActionCreators({startLoading, stopLoading, setPhoto}, dispatch),
   });
   
-  export default connect(mapStateToProps, mapDispatchToProps)(PatientNew)
+  export default connect(mapStateToProps, mapDispatchToProps)(Patient)
